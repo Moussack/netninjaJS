@@ -25,6 +25,7 @@ const updateUI = (data) => {
 
    // update night/day img
    const timeSrc = weather.IsDayTime ? '/weatherApp/img/day.svg' : '/weatherApp/img/night.svg';
+
    time.setAttribute('src', timeSrc);
 
    //remove d-none clas if present
@@ -52,4 +53,13 @@ cityForm.addEventListener('submit', (e) => {
    updateCity(city)
       .then((data) => updateUI(data))
       .catch((err) => console.log(err));
+
+   // set localstorage
+   localStorage.setItem('city', city);
 });
+
+if (localStorage.getItem('city')) {
+   updateCity(localStorage.getItem('city'))
+      .then((data) => updateUI(data))
+      .catch((err) => console.log(err));
+}
