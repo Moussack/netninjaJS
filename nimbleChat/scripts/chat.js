@@ -10,6 +10,7 @@ class Chatroom {
       this.room = room;
       this.username = username;
       this.chats = db.collection('chats');
+      this.unsub;
    }
    async addChat(message) {
       // custom object to send/add to the db
@@ -26,11 +27,11 @@ class Chatroom {
    }
 
    getChats(callback) {
-      this.chats
+      this.unsub = this.chats
          .where('room', '==', this.room)
          .orderBy('created_at')
          .onSnapshot((snapshot) => {
-            console.log(snapshot.docChanges());
+            //console.log(snapshot.docChanges());
             snapshot.docChanges().forEach((change) => {
                if (change.type === 'added') {
                   //update the UI
@@ -39,9 +40,36 @@ class Chatroom {
             });
          });
    }
+
+   // update username and room
+   updateName(username) {
+      this.username = username;
+      console.log('username updated');
+   }
+
+   updateRoom(room) {
+      this.room = room;
+      // MUST check if unsub has a value yet, if not checked it will throw error.
+      if (this.unsub) {
+         this.unsub();
+      }
+
+      console.log('room updated');
+   }
 }
 
-const chatroom = new Chatroom('gaming', 'rey');
+const chatroom = new Chatroom('general', 'rey');
+
 chatroom.getChats((data) => {
    console.log(data);
 });
+
+setTimeout(() => {
+   chatroom.updateRoom('gaming');
+   chatroom.updateName('chunli');
+   chatroom.getChats((data) => {
+      console.log(data);
+   });
+
+   //chatroom.addChat('hello my name is chunli');
+}, 3000);
