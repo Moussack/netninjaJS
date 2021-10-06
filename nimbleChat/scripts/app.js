@@ -1,4 +1,4 @@
-// ui.js Responsible for bringing chat.js and ui.js together and running the application
+// ui.js Responsible for bringing(Gluing) chat.js and ui.js together and running the application
 
 // DOM query
 const chatList = document.querySelector('.chat-list');
