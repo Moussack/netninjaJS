@@ -12,6 +12,8 @@ class Chatroom {
       this.chats = db.collection('chats');
       this.unsub;
    }
+
+   // add chat to the DB
    async addChat(message) {
       // custom object to send/add to the db
       const now = new Date();
@@ -21,11 +23,12 @@ class Chatroom {
          room: this.room,
          created_at: firebase.firestore.Timestamp.fromDate(now),
       };
-      // send the custom object to the db
+      // *** send the custom object to the db
       const response = await this.chats.add(chat);
       return response;
    }
 
+   // set listener
    getChats(callback) {
       this.unsub = this.chats
          .where('room', '==', this.room)
@@ -41,13 +44,14 @@ class Chatroom {
          });
    }
 
-   // update username and room
+   // update username
    updateName(username) {
       this.username = username;
       console.log('username updated');
       localStorage.setItem('username', username);
    }
 
+   // update room by unsub the listener first
    updateRoom(room) {
       this.room = room;
       // MUST check if unsub has a value yet, if not checked it will throw error.

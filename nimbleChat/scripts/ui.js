@@ -7,6 +7,7 @@ class ChatUI {
       this.list = list;
    }
 
+   // display chat data to the DOM
    render(data) {
       const when = dateFns.distanceInWordsToNow(data.created_at.toDate(), {
          addSuffix: true,
@@ -21,5 +22,10 @@ class ChatUI {
 
       // *** render to the dom
       this.list.innerHTML += html;
+   }
+
+   // clear chat data in the DOM
+   clear() {
+      this.list.innerHTML = '';
    }
 }
