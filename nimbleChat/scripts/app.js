@@ -44,8 +44,9 @@ newNameForm.addEventListener('submit', (e) => {
    chatroom.updateName(newName);
    // reset the form
    newNameForm.reset();
-   // show then hide the update mssg
+   // show update mssg then hide the update mssg
    updateMssg.innerText = `Your name was updated to ${newName}`;
+   // hide after 2.5 secs
    setTimeout(() => {
       updateMssg.innerText = ``;
    }, 2500);
@@ -53,7 +54,7 @@ newNameForm.addEventListener('submit', (e) => {
 
 // choosing chatroom
 rooms.addEventListener('click', (e) => {
-   // event delegation
+   // using event delegation
    //console.dir(e.target);
    if (e.target.tagName === 'BUTTON') {
       // clear the chat on DOM

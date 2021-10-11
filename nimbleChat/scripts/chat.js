@@ -15,7 +15,7 @@ class Chatroom {
 
    // add chat to the DB
    async addChat(message) {
-      // custom object to send/add to the db
+      // CREATE custom object to send/add to the db
       const now = new Date();
       const chat = {
          message,
@@ -58,7 +58,6 @@ class Chatroom {
       if (this.unsub) {
          this.unsub();
       }
-
       console.log('room updated');
    }
 }
