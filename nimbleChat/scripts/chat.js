@@ -25,6 +25,7 @@ class Chatroom {
       };
       // *** send the custom object to the db
       const response = await this.chats.add(chat);
+      console.dir(firebase.firestore);
       return response;
    }
 

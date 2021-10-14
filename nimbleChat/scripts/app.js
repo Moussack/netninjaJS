@@ -67,3 +67,5 @@ rooms.addEventListener('click', (e) => {
       });
    }
 });
+
+console.log(newChatForm.message);
