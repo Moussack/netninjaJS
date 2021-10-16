@@ -1,18 +1,50 @@
 // listen for auth status changes
 auth.onAuthStateChanged((user) => {
+   //console.log(user);
    if (user) {
-      // get data from db
+      // *** get data from db
       db.collection('guides')
-         .get()
-         .then((snapshots) => {
+         .onSnapshot((snapshots) => {
             setupGuides(snapshots.docs);
+            setupUI(user);
          })
          .catch((err) => {
-            console.log(err);
+            console.log(err.message);
          });
    } else {
       setupGuides([]);
+      setupUI();
    }
+});
+
+// create new guide
+const createForm = document.querySelector('#create-form');
+createForm.addEventListener('submit', (e) => {
+   e.preventDefault();
+
+   // get user input
+   const title = createForm['title'].value;
+   const content = createForm['content'].value;
+
+   // create custom object to be sended to db
+   const guide = {
+      title,
+      content,
+   };
+
+   // *** send the data to the db
+   db.collection('guides')
+      .add(guide)
+      .then(() => {
+         console.log('guide added');
+         //close the modal and reset form
+         const modal = document.querySelector('#modal-create');
+         M.Modal.getInstance(modal).close();
+         createForm.reset();
+      })
+      .catch((err) => {
+         console.log(err.message);
+      });
 });
 
 // signup
