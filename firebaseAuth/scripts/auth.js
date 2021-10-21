@@ -1,16 +1,17 @@
-// listen for auth status changes
+// listen for auth status changes (login or logout)
 auth.onAuthStateChanged((user) => {
-   //console.log(user);
+   console.log(user);
    if (user) {
       // *** get data from db
-      db.collection('guides')
-         .onSnapshot((snapshots) => {
+      db.collection('guides').onSnapshot(
+         (snapshots) => {
             setupGuides(snapshots.docs);
             setupUI(user);
-         })
-         .catch((err) => {
+         },
+         (err) => {
             console.log(err.message);
-         });
+         }
+      );
    } else {
       setupGuides([]);
       setupUI();
@@ -41,9 +42,6 @@ createForm.addEventListener('submit', (e) => {
          const modal = document.querySelector('#modal-create');
          M.Modal.getInstance(modal).close();
          createForm.reset();
-      })
-      .catch((err) => {
-         console.log(err.message);
       });
 });
 
@@ -60,6 +58,11 @@ signupForm.addEventListener('submit', (e) => {
       .createUserWithEmailAndPassword(email, password)
       .then((data) => {
          console.log(data);
+         return db.collection('users').doc(data.user.uid).set({
+            bio: signupForm['signup-bio'].value,
+         });
+      })
+      .then(() => {
          // closing the modal and reset the form
          const modal = document.querySelector('#modal-signup');
          M.Modal.getInstance(modal).close();
@@ -96,6 +99,18 @@ loginForm.addEventListener('submit', (e) => {
          loginForm.reset();
       })
       .catch((err) => {
+         const error = document.querySelector('.error');
          console.log(err);
+         if (err.code === 'auth/wrong-password') {
+            error.innerHTML = `${err.message}`;
+            setInterval(() => {
+               error.remove();
+            }, 7000);
+         } else if (err.code === 'auth/user-not-found') {
+            error.innerHTML = `${err.message}`;
+            setInterval(() => {
+               error.remove();
+            }, 7000);
+         }
       });
 });

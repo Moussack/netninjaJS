@@ -1,0 +1,1 @@
+(()=>{"use strict";const m=[{name:"maro",premium:!0},{name:"karo",premium:!1},{name:"jaro",premium:!0}].filter((m=>m.premium));console.log(m),console.log("asdasd2")})();
