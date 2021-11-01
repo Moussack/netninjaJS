@@ -23,6 +23,7 @@ getDocs(collRef)
       let books = [];
       snapshot.docs.forEach((doc) => {
          books.push({ ...doc.data(), id: doc.id });
+         console.log('doc.data: ', doc.data());
       });
       console.log(books);
    })
